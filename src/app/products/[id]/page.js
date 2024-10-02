@@ -7,6 +7,7 @@ const SingleProductPage = ({ searchParams }) => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [zoomStyle, setZoomStyle] = useState({});
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (id) {
@@ -22,28 +23,45 @@ const SingleProductPage = ({ searchParams }) => {
     const { offsetX, offsetY, target } = e.nativeEvent;
     const { offsetWidth, offsetHeight } = target;
 
-    // Calculate percentage of cursor position relative to image
     const xPos = (offsetX / offsetWidth) * 100;
     const yPos = (offsetY / offsetHeight) * 100;
 
-    // Update background position to zoom into the point where cursor is
     setZoomStyle({
       backgroundPosition: `${xPos}% ${yPos}%`,
-      backgroundSize: "200%" // Change zoom level here
+      backgroundSize: "200%",
     });
   };
 
   const handleMouseLeave = () => {
-    // Reset background position and size when cursor leaves
     setZoomStyle({
       backgroundPosition: "center",
-      backgroundSize: "cover"
+      backgroundSize: "cover",
     });
+  };
+
+  const incrementQuantity = () => {
+    if (quantity < 5) {
+      setQuantity((prev) => prev + 1);
+    }
+  };
+
+  const decrementQuantity = () =>
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const calculateDiscountPercentage = (originalPrice, sellingPrice) => {
+    const discount = ((originalPrice - sellingPrice) / originalPrice) * 100;
+    return Math.round(discount);
   };
 
   if (!product) {
     return <div>Loading...</div>;
   }
+
+  const totalPrice = product.attributes.originalPrice * quantity;
+  const discountPercentage = calculateDiscountPercentage(
+    product.attributes.price,
+    product.attributes.originalPrice
+  );
 
   return (
     <div className="p-1 h-[100vh]">
@@ -63,13 +81,12 @@ const SingleProductPage = ({ searchParams }) => {
               </div>
             ))}
           </div>
-          <div className="min-w-fit ">
-            {/* Zoom effect container */}
+          <div className="min-w-fit">
             <div
               className="cursor-pointer relative w-[400px] h-[400px] overflow-hidden border rounded-lg shadow-md"
               style={{
                 backgroundImage: `url(${selectedImage})`,
-                ...zoomStyle // Apply zoom style dynamically
+                ...zoomStyle,
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
@@ -79,19 +96,44 @@ const SingleProductPage = ({ searchParams }) => {
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold mb-2">{product.attributes.name}</h1>
           <h2 className="text-xl font-semibold mb-2">
-            Price: ₹{product.attributes.price}
+            Selling Price: ₹{product.attributes.originalPrice}
           </h2>
-          <p className="text-gray-600 mb-4">
-            Original Price: ₹{product.attributes.originalPrice}
+          <p className="text-gray-600 mb-4 line-through">
+            Price: ₹{product.attributes.price}
+          </p>
+          <p className="text-green-500 font-bold mb-2 ">
+            Discount: {discountPercentage}% Off
           </p>
           <p className="text-gray-700 mb-4">
             {product.attributes.description.length > 0
               ? product.attributes.description.join(", ")
               : "No description available."}
           </p>
-          <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
-            Add to Cart
-          </button>
+          <div className="flex items-center mb-4">
+            <button
+              onClick={decrementQuantity}
+              className="bg-gray-200 px-2 py-1 rounded-l"
+            >
+              -
+            </button>
+            <span className="px-4">{quantity}</span>
+            <button
+              onClick={incrementQuantity}
+              className="bg-gray-200 px-2 py-1 rounded-r"
+            >
+              +
+            </button>
+          </div>
+          <h3 className="text-lg font-bold mb-2">Total Price: ₹{totalPrice}</h3>
+          <div className="flex gap-4">
+           
+            <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
+              Add to Cart
+            </button>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
+              Buy Now
+            </button>
+          </div>
         </div>
       </div>
     </div>

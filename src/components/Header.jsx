@@ -1,10 +1,12 @@
+import Link from 'next/link';
 import { FaSearch, FaShoppingCart } from 'react-icons/fa';
 
 export default function Header() {
   return (
     <header className="bg-blue-500 text-white flex items-center justify-between px-6 py-2">
       <div className="flex items-center">
-        <h1 className="text-2xl font-bold">PeakMart</h1>
+        <Link href="/">        <h1 className="text-2xl font-bold">PeakMart</h1>
+        </Link>
         <span className="text-xs ml-2">Explore <span className="text-yellow-300">PeakMall</span></span>
       </div>
       <div className="flex items-center w-1/2">
