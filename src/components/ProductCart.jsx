@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const ProductCart = ({ ProductItem: item }) => {
   const calculateDiscountPercentage = (originalPrice, sellingPrice) => {
-    const discount = ((originalPrice - sellingPrice) / originalPrice) * 100;
+    const discount = ((sellingPrice - originalPrice) / originalPrice) * 100;
     return Math.round(discount);
   };
 
