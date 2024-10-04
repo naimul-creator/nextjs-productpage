@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import get from "@/GlobalApi/get";
+import Link from "next/link";
 
 const SingleProductPage = ({ searchParams }) => {
   const { id } = searchParams;
@@ -126,13 +127,15 @@ const SingleProductPage = ({ searchParams }) => {
           </div>
           <h3 className="text-lg font-bold mb-2">Total Price: ₹{totalPrice}</h3>
           <div className="flex gap-4">
-           
             <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
               Add to Cart
             </button>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
-              Buy Now
-            </button>
+
+            <Link href="/checkout">
+              <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
+                Buy Now
+              </button>
+            </Link>
           </div>
         </div>
       </div>
