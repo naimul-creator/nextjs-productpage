@@ -1,8 +1,23 @@
+"use client"
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { addToCart } from "@/libs/features/cartSlice";
+import { useDispatch } from "react-redux";
 
 const ProductCart = ({ ProductItem: item }) => {
+
+  const dispatch = useDispatch();
+
+  const handerAddToCart =(productid)=>{
+    console.log(productid);
+
+    dispatch(addToCart(productid))
+
+
+
+  }
+
   const calculateDiscountPercentage = (originalPrice, sellingPrice) => {
     const discount = ((sellingPrice - originalPrice) / originalPrice) * 100;
     return Math.round(discount);
@@ -43,7 +58,7 @@ const ProductCart = ({ ProductItem: item }) => {
           </div>
         </div>
       </Link>
-      <button className="bg-orange-500 text-white px-4 py-2 rounded-lg mt-2">Add to Cart</button>
+      <button onClick={() => handerAddToCart(item?.id)} className="bg-orange-500 text-white px-4 py-2 rounded-lg mt-2">Add to Cart</button>
     </div>
   );
 };

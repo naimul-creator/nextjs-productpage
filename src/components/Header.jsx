@@ -1,7 +1,14 @@
+"use client";
 import Link from 'next/link';
 import { FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { useSelector } from "react-redux";
 
 export default function Header() {
+
+
+  const cart = useSelector((state) => state.cart.item);
+
+
   return (
     <header className="bg-blue-500 text-white flex items-center justify-between px-6 py-2">
       <div className="flex items-center">
@@ -21,7 +28,8 @@ export default function Header() {
       </div>
       <div className="flex items-center space-x-6">
         <button className="bg-orange-500 text-blue-800 p-1.5 rounded-md">Login</button>
-       <Link className="flex items-center" href="/addtocart"> <FaShoppingCart className="mr-2" /> Cart</Link>
+       <Link className="flex items-center" href="/addtocart"> <FaShoppingCart className="mr-2" /> Cart:  <span>..{cart.length}</span></Link>
+       
          
       
       </div>

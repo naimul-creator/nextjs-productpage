@@ -5,7 +5,6 @@ import { makeStore } from "@/libs/store";
 import { useRef } from "react";
 import { Provider } from "react-redux";
 import PropTypes from "prop-types";
-import { addToCart } from "@/libs/features/cartSlice";
 
 function StoreProvider({ children }) {
   const storeRef = useRef(makeStore());
@@ -14,9 +13,9 @@ if(!storeRef.current){
 }
 
 
-useEffect(() => {
-  storeRef.current.dispatch(addToCart({ id: 1, name: "Product 1" }));
-}, []);
+// useEffect(() => {
+//   storeRef.current.dispatch(addToCart({ id: 1, name: "Product 1" }));
+// }, []);
 
   return <Provider store={storeRef.current}>{children}</Provider>;
 }
