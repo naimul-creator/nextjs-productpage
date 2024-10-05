@@ -1,14 +1,30 @@
-'use client'
-import { makeStore } from '@/libs/store'
-import { useRef } from 'react'
-import { Provider } from 'react-redux'
+"use client";
 
-export default function StoreProvider({ children }) {
-  const storeRef = useRef()
-  if (!storeRef.current) {
-    // Create the store instance the first time this renders
-    storeRef.current = makeStore()
-  }
+import React, { useEffect } from "react";
+import { makeStore } from "@/libs/store";
+import { useRef } from "react";
+import { Provider } from "react-redux";
+import PropTypes from "prop-types";
+import { addToCart } from "@/libs/features/cartSlice";
 
-  return <Provider store={storeRef.current}>{children}</Provider>
+function StoreProvider({ children }) {
+  const storeRef = useRef(makeStore());
+if(!storeRef.current){
+  storeRef.current = makeStore();
 }
+
+
+useEffect(() => {
+  storeRef.current.dispatch(addToCart({ id: 1, name: "Product 1" }));
+}, []);
+
+  return <Provider store={storeRef.current}>{children}</Provider>;
+}
+
+// Add PropTypes validation
+StoreProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default StoreProvider;
+

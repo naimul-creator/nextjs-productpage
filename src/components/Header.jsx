@@ -21,9 +21,9 @@ export default function Header() {
       </div>
       <div className="flex items-center space-x-6">
         <button className="bg-orange-500 text-blue-800 p-1.5 rounded-md">Login</button>
-        <a href="#" className="flex items-center">
-          <FaShoppingCart className="mr-2" /> Cart
-        </a>
+       <Link className="flex items-center" href="/addtocart"> <FaShoppingCart className="mr-2" /> Cart</Link>
+         
+      
       </div>
     </header>
   );
